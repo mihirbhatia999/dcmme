@@ -1,9 +1,4 @@
 
-# coding: utf-8
-
-# In[1]:
-
-
 import urllib.request
 import requests
 from bs4 import BeautifulSoup
@@ -12,7 +7,6 @@ import urltools
 import time 
 
 
-# In[2]:
 
 
 def get_base_url(url):
@@ -30,8 +24,6 @@ def get_base_url(url):
     return base_url
 
 
-# In[3]:
-
 
 def does_page_exist(url):
     exists = 0 
@@ -46,7 +38,7 @@ def does_page_exist(url):
     return exists
 
 
-# In[4]:
+
 
 
 # Function to extract links from a URL------------------------------------------
@@ -76,7 +68,7 @@ def href_scrapper(url):
 
 
 
-# In[5]:
+
 
 
 # Function to create complete links---------------------------------------------
@@ -92,7 +84,7 @@ def link_former(url):
 
 
 
-# In[6]:
+
 
 
 # Function to save links to directory of python file----------------------------
@@ -142,7 +134,6 @@ def file_save(url, i):
 
 
 
-# In[7]:
 
 
 # Accepting input of URL and depth----------------------------------------------
@@ -252,9 +243,6 @@ while layer < layer_stop:
     layer +=1
 toc = time.time()
 print(toc - tic)
-
-
-# In[31]:
 
 
 tic = time.time()
