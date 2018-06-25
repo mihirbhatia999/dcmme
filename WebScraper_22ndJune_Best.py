@@ -146,127 +146,117 @@ def file_save(url, i):
 
 
 # Accepting input of URL and depth----------------------------------------------
-tic = time.time()
-original_url = "https://www.rowetruck.com"
-parent_list = [original_url]
-url_to_check = get_base_url(original_url)
-print(url_to_check)
-url_to_check = str(url_to_check)
+def crawl(original_url):
+    tic = time.time()
+    parent_list = [original_url]
+    url_to_check = get_base_url(original_url)
+    print(url_to_check)
+    url_to_check = str(url_to_check)
 
-layer_stop = 1
-layer = 0
+    layer_stop = 1
+    layer = 0
 
 
-#initializing all the requiered lists---------------------------------------------
-visited_all  = [original_url]
-visited_current_layer = []
-child_list =[]
-child_list_filtered = []
-#columns = ['Link','Parent Link', 'Layer']
-df = pd.DataFrame()
+    #initializing all the requiered lists---------------------------------------------
+    visited_all  = [original_url]
+    visited_current_layer = []
+    child_list =[]
+    child_list_filtered = []
+    #columns = ['Link','Parent Link', 'Layer']
+    df = pd.DataFrame()
 
 
 # Main execution of scrapper----------------------------------------------------
 
-#looping through layers 
-while layer < layer_stop:
     
-    #looping through URLs in parent-list
-    for url in parent_list:
+    #looping through layers 
+    while layer < layer_stop:
+
+        #looping through URLs in parent-list
+        for url in parent_list:
+
+            #scraping the children from the parent url----------------------------
+            if href_scrapper(url) != 0:
+                child_list = href_scrapper(url)
+
+
+            for child in child_list:
+                if child != None:
+                    #if child link is of the form "index.php/blahblah" and parent ends with '/'
+                    #---> "parentlink/index.php/blahblah"
+                    if child.startswith('/'):
+                        child= str(url) + str(child)
+
+                    if url.endswith('/') and url_to_check not in child:
+                        child = str(url) + str(child)
+
+                    #normalize the child links-------------------------------------
+                    child=urltools.normalize(child)  
+
+
+                    #filtering out based on 1) External 2) Repeating 3) Invalid links---------------------------
+                    if url_to_check in child and child not in visited_all and does_page_exist(child)==1:
+                        child_list_filtered.append(child)
+
+                    #adding everthing to visited all--------------------
+                    if child not in visited_all:
+                        child_slash = child + '/'
+                        visited_all.append(child)  
+                        visited_all.append(child_slash)
+
+
+            #adding  the visited and filtered children into the "current visited layer" ------ 
+            for child_filtered in child_list_filtered:
+                visited_current_layer.append(child_filtered)
+
+            #creating a Pandas dataframe to store everything for download----------
+            layer_number = [layer+1]*len(child_list_filtered)
+            parent_of_child = [url]*len(child_list_filtered)
+
+            df_child = pd.DataFrame(child_list_filtered)
+            df_parent = pd.DataFrame(parent_of_child)
+            df_layer = pd.DataFrame(layer_number)
+
+
+            df_to_be_added = pd.concat([df_child,df_parent,df_layer], axis=1)
+            df = pd.concat([df,df_to_be_added],ignore_index=True, axis = 0)
+            #----------------------------------------------------------------------
+
+            #emptying the child lists
+            child_list = []
+            child_list_filtered = []
+
+        #condition to stop filtering-----------------------------------------------
+        if not visited_current_layer :
+            layer_stop = layer_stop 
+        else:
+            layer_stop += 1
+
+
+        #child layer is now parent layer--------------------------------------------
+        parent_list = []
+
+        #we only dont add .png, .jpg , .pdf to the new parent layer 
+        for visited_current in visited_current_layer: 
+            print(visited_current)
+            if(not visited_current.endswith('.png') and not visited_current.endswith('.jpg') and not  visited_current.endswith('.pdf')):
+                parent_list.append(visited_current)
+
+
+        #displaying the links in different layers----------------------------------
+        #print("Links in LAYER:" + str(layer+1))
+        print("No of links = " + str(len(visited_current_layer)))
+        #print(visited_current_layer)
+        print("\n")
+        visited_current_layer = [] 
+        #updating the layer number
+        layer +=1
         
-        #scraping the children from the parent url----------------------------
-        if href_scrapper(url) != 0:
-            child_list = href_scrapper(url)
+        return df
     
     
-        for child in child_list:
-            if child != None:
-                #if child link is of the form "index.php/blahblah" and parent ends with '/'
-                #---> "parentlink/index.php/blahblah"
-                if child.startswith('/'):
-                    child= str(url) + str(child)
-                    
-                if url.endswith('/') and url_to_check not in child:
-                    child = str(url) + str(child)
-                    
-                #normalize the child links-------------------------------------
-                child=urltools.normalize(child)  
-                    
-
-                #filtering out based on 1) External 2) Repeating 3) Invalid links---------------------------
-                if url_to_check in child and child not in visited_all and does_page_exist(child)==1:
-                    child_list_filtered.append(child)
-                
-                #adding everthing to visited all--------------------
-                if child not in visited_all:
-                    child_slash = child + '/'
-                    visited_all.append(child)  
-                    visited_all.append(child_slash)
-                    
-                    
-        #adding  the visited and filtered children into the "current visited layer" ------ 
-        for child_filtered in child_list_filtered:
-            visited_current_layer.append(child_filtered)
-
-        #creating a Pandas dataframe to store everything for download----------
-        layer_number = [layer+1]*len(child_list_filtered)
-        parent_of_child = [url]*len(child_list_filtered)
-
-        df_child = pd.DataFrame(child_list_filtered)
-        df_parent = pd.DataFrame(parent_of_child)
-        df_layer = pd.DataFrame(layer_number)
 
 
-        df_to_be_added = pd.concat([df_child,df_parent,df_layer], axis=1)
-        df = pd.concat([df,df_to_be_added],ignore_index=True, axis = 0)
-        #----------------------------------------------------------------------
-        
-        #emptying the child lists
-        child_list = []
-        child_list_filtered = []
-        
-    #condition to stop filtering-----------------------------------------------
-    if not visited_current_layer :
-        layer_stop = layer_stop 
-    else:
-        layer_stop += 1
 
-    
-    #child layer is now parent layer--------------------------------------------
-    parent_list = []
-    
-    #we only dont add .png, .jpg , .pdf to the new parent layer 
-    for visited_current in visited_current_layer: 
-        print(visited_current)
-        if(not visited_current.endswith('.png') and not visited_current.endswith('.jpg') and not  visited_current.endswith('.pdf')):
-            parent_list.append(visited_current)
-            
-            
-    #displaying the links in different layers----------------------------------
-    #print("Links in LAYER:" + str(layer+1))
-    print("No of links = " + str(len(visited_current_layer)))
-    #print(visited_current_layer)
-    print("\n")
-    visited_current_layer = [] 
-    #updating the layer number
-    layer +=1
-toc = time.time()
-print(toc - tic)
-
-
-# In[31]:
-
-
-tic = time.time()
-href_scrapper("http://orijfowijfiwofij.com/")
-toc = time.time()
-print("href scrapper")
-print(toc-tic)
-
-tic = time.time()
-does_page_exist("http://orijfowijfiwofij.com/")
-toc = time.time()
-print("does page exist")
-print(toc-tic)
 
 
