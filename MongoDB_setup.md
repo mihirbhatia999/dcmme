@@ -5,10 +5,9 @@ I assume that you've downloaded MongoDB for your system and installed the approp
 
 The following steps have been covered in this manual 
 1. [Set directory and create bin folder](#set-directory-and-create-a-bin-in-desired-folder) 
-2. [Setup of folders] (#setup-of-folders)
-3. [Install mongoDB for the folders](#install-mongodb-for-the-folders)
-4. [Access MongoDB environment](#access-mongodb-environment)
-5. [Databases and Collections](#databases-and-collections)
+2. [Install mongoDB for the folders](#install-mongodb-with-this-data-and-log-folders)
+3. [Access MongoDB environment](#access-mongo-environment-from-cmd)
+4. [Databases and Collections](#databases-and-collections)
 
 
 ## Set directory and create a Bin in desired folder 
@@ -26,7 +25,7 @@ D:\mongoDB_DCMME>cd bin
 ```
 This sets the bin folder for MonogDB inside the "MongoDB_DCMME" file which I created within the D drive 
 
-## Setup the necessary folders (data,log,db)
+## Setup the necessary folders
 Create 2 folders named "data" and "log" with your MongoDB folder (mine is "MongoDB_DCMME"). Also create a folder named "db" inside the data folder that will contain your unstructured databases 
 
 ## Install mongoDB with this data and log folders
