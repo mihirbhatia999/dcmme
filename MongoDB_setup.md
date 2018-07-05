@@ -3,25 +3,29 @@
 ## SET DIRECTORY IN WINDOWS and create a Bin in desired folder 
 ```
 C:\>cd Windows
-
+```
+```
 C:\Windows>d:
-
+```
+```
 D:\>cd mongoDB_DCMME
-
+```
+```
 D:\mongoDB_DCMME>cd bin
 ```
 This sets the bin folder for MonogDB inside the "MongoDB_DCMME" file which I created within the D drive 
 
-## SETUP MONGODB WITH LOG AND DATA AS WELL AS DB FOLDER
+## Setup the necessary folders (data,log,db)
 Create 2 folders named "data" and "log" with your MongoDB folder (mine is "MongoDB_DCMME"). Also create a folder named "db" inside the data folder that will contain your unstructured databases 
 
 ## Install mongoDB with this data and log folders
-```D:\mongoDB_DCMME\bin>mongod --directoryperdb --dbpath D:\mongoDB_DCMME\data\db --logpath D:\mongoDB_DCMME\log\mongo.log --logappend  --install
 ```
-
-## Start MongoDB
+D:\mongoDB_DCMME\bin>mongod --directoryperdb --dbpath D:\mongoDB_DCMME\data\db --logpath D:\mongoDB_DCMME\log\mongo.log --logappend  --install
+```
+Once mongoDB is setup with the log, data and db folders. It's now time to start MongoDB from your bin folder that you setup
+```
 D:\mongoDB_DCMME\bin>net start MongoDB
-The requested service has already been started.
+```
 
 ## Access mongo environment from cmd 
 Type in "mongo" into the bin folder to get into the mongo environemnt and use it's commands 
@@ -71,21 +75,15 @@ config  0.000GB
 local   0.000GB
 ```
 
-### Creating a BSON file from CMD
+### Creating a database
 ```
 > use mycustomers
 ```
-Output:
-```
-switched to db mycustomers
-```
 
 ### Check the databases 
+This command will show the list of databases that are present in the directory you are working within 
 ```
 > db
-```
-```
-mycustomers
 ```
 
 ### Create a user for the Database 
@@ -99,10 +97,12 @@ MongoDB stores documents in collections. Collections are analogous to tables in 
 ```
 > db.createCollection('customers');
 { "ok" : 1 }
-
+```
+```
 > show collections
 customers
-
+```
+```
 > db
 mycustomers
 ```
@@ -110,12 +110,14 @@ mycustomers
 ### Insert Elements into the Collection 
 ```
 > db.customers.insert({first_name:"John", last_name:"DOE"})
-WriteResult({ "nInserted" : 1 })
 ```
 
 ### View the customers using find()
 ```
 > db.customers.find();
+```
+OUTPUT:
+```
 { "_id" : ObjectId("5b3da003a832f048a9e7571a"), "first_name" : "John", "last_name" : "DOE" }
 ```
 
@@ -152,6 +154,7 @@ Now when you print the colleciton
 ```
 
 A clearer output is obtained. This is especially useful as unstructured databases tend to get messy with increasing number of keys and entries. 
+```
 {
         "_id" : ObjectId("5b3da003a832f048a9e7571a"),
         "first_name" : "John",
@@ -163,7 +166,7 @@ A clearer output is obtained. This is especially useful as unstructured database
         "last_name" : "Prast"
 }
 { "_id" : ObjectId("5b3da06ca832f048a9e7571c"), "first_name" : "Someguy" }
-
+```
 
 Author 
 Mihir Bhatia
