@@ -136,7 +136,7 @@ Note : If this doesn't work - set pretty to the Default way to print (instructio
 ```
 
 
-### print the objects inside a colleciton 
+### Print the objects inside a colleciton 
 ```
 > db.customers.find()
 { "_id" : ObjectId("5b3da003a832f048a9e7571a"), "first_name" : "John", "last_name" : "DOE" }
@@ -145,7 +145,7 @@ Note : If this doesn't work - set pretty to the Default way to print (instructio
 ```
 
 
-### set the default print option to "Pretty"
+### Set the default print option to "Pretty"
 Pretty allows you to clearly view your objects inside the collection you wish to print 
 ```
 > DBQuery.prototype._prettyShell = true
@@ -171,6 +171,6 @@ A clearer output is obtained. This is especially useful as unstructured database
 { "_id" : ObjectId("5b3da06ca832f048a9e7571c"), "first_name" : "Someguy" }
 ```
 
-Author 
+## Author 
 Mihir Bhatia
 https://www.mihirbhatia.com
