@@ -1,31 +1,170 @@
-## Synopsis
+# MongoDB Setup and Introduction 
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+## SET DIRECTORY IN WINDOWS and create a Bin in desired folder 
+```
+C:\>cd Windows
 
-## Code Example
+C:\Windows>d:
 
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+D:\>cd mongoDB_DCMME
 
-## Motivation
+D:\mongoDB_DCMME>cd bin
+```
+This sets the bin folder for MonogDB inside the "MongoDB_DCMME" file which I created within the D drive 
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
+## SETUP MONGODB WITH LOG AND DATA AS WELL AS DB FOLDER
+Create 2 folders named "data" and "log" with your MongoDB folder (mine is "MongoDB_DCMME"). Also create a folder named "db" inside the data folder that will contain your unstructured databases 
 
-## Installation
+## Install mongoDB with this data and log folders
+```D:\mongoDB_DCMME\bin>mongod --directoryperdb --dbpath D:\mongoDB_DCMME\data\db --logpath D:\mongoDB_DCMME\log\mongo.log --logappend  --install
+```
 
-Provide code examples and explanations of how to get the project.
+## Start MongoDB
+D:\mongoDB_DCMME\bin>net start MongoDB
+The requested service has already been started.
 
-## API Reference
+## Access mongo environment from cmd 
+Type in "mongo" into the bin folder to get into the mongo environemnt and use it's commands 
+```
+D:\mongoDB_DCMME\bin>mongo
+```
 
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+You might get some output 
+```
+MongoDB shell version v4.0.0
+connecting to: mongodb://127.0.0.1:27017
+MongoDB server version: 4.0.0
+Welcome to the MongoDB shell.
+For interactive help, type "help".
+For more comprehensive documentation, see
+        http://docs.mongodb.org/
+Questions? Try the support group
+        http://groups.google.com/group/mongodb-user
+Server has startup warnings:
+2018-07-05T00:07:26.976-0400 I CONTROL  [initandlisten]
+2018-07-05T00:07:26.976-0400 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2018-07-05T00:07:26.976-0400 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2018-07-05T00:07:26.976-0400 I CONTROL  [initandlisten]
+---
+Enable MongoDB's free cloud-based monitoring service to collect and display
+metrics about your deployment (disk utilization, CPU, operation statistics,
+etc).
 
-## Tests
+The monitoring data will be available on a MongoDB website with a unique
+URL created for you. Anyone you share the URL with will also be able to
+view this page. MongoDB may use this information to make product
+improvements and to suggest MongoDB products and deployment options to you.
 
-Describe and show how to run the tests with code examples.
+To enable free monitoring, run the following command:
+db.enableFreeMonitoring()
+---
+```
 
-## Contributors
+## Databases and Collections 
+```
+> show dbs
+```
+Since no datbases have been setup we get the following output:
+```
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+```
 
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
+### Creating a BSON file from CMD
+```
+> use mycustomers
+```
+Output:
+```
+switched to db mycustomers
+```
 
-## License
+### Check the databases 
+```
+> db
+```
+```
+mycustomers
+```
 
-A short snippet describing the license (MIT, Apache, etc.)
+### Create a user for the Database 
+
+> db.createUser({user:"Mihir", pwd:"12345", roles:["readWrite","dbAdmin"]})
+Successfully added user: { "user" : "Mihir", "roles" : [ "readWrite", "dbAdmin" ] }
+
+### Create a collection 
+MongoDB stores documents in collections. Collections are analogous to tables in relational databases.
+
+```
+> db.createCollection('customers');
+{ "ok" : 1 }
+
+> show collections
+customers
+
+> db
+mycustomers
+```
+
+### Insert Elements into the Collection 
+```
+> db.customers.insert({first_name:"John", last_name:"DOE"})
+WriteResult({ "nInserted" : 1 })
+```
+
+### View the customers using find()
+```
+> db.customers.find();
+{ "_id" : ObjectId("5b3da003a832f048a9e7571a"), "first_name" : "John", "last_name" : "DOE" }
+```
+
+### Insert entries into collection using insert()
+```
+> db.customers.insert([{first_name: "Steven",last_name:"Prast"},{first_name:"Someguy"}])
+```
+
+To print the new customers collection using the command below 
+Note : If this doesn't work - set pretty to the Default way to print (instructions below)
+```
+> db.customer.find().pretty
+```
+
+
+### print the objects inside a colleciton 
+```
+> db.customers.find()
+{ "_id" : ObjectId("5b3da003a832f048a9e7571a"), "first_name" : "John", "last_name" : "DOE" }
+{ "_id" : ObjectId("5b3da06ca832f048a9e7571b"), "first_name" : "Steven", "last_name" : "Prast" }
+{ "_id" : ObjectId("5b3da06ca832f048a9e7571c"), "first_name" : "Someguy" }
+```
+
+
+### set the default print option to "Pretty"
+Pretty allows you to clearly view your objects inside the collection you wish to print 
+```
+> DBQuery.prototype._prettyShell = true
+true
+```
+Now when you print the colleciton 
+```
+> db.customers.find()
+```
+
+A clearer output is obtained. This is especially useful as unstructured databases tend to get messy with increasing number of keys and entries. 
+{
+        "_id" : ObjectId("5b3da003a832f048a9e7571a"),
+        "first_name" : "John",
+        "last_name" : "DOE"
+}
+{
+        "_id" : ObjectId("5b3da06ca832f048a9e7571b"),
+        "first_name" : "Steven",
+        "last_name" : "Prast"
+}
+{ "_id" : ObjectId("5b3da06ca832f048a9e7571c"), "first_name" : "Someguy" }
+
+
+Author 
+Mihir Bhatia
+https://www.mihirbhatia.com
