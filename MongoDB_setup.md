@@ -4,11 +4,11 @@ This is an instructional manual that helps you setup MongoDB using command line 
 I assume that you've downloaded MongoDB for your system and installed the appropriate version. Also make sure that during installation you go the "Custom" option and create a folder you want to work in. I created"Mongo_DCMME" folder for my project in the D-drive.
 
 The following steps have been covered in this manual 
-1. Set directory and create bin folder 
-2. Setup of folders 
-3. Install mongoDB for the folders
-4. Access MongoDB environment
-5. Databases and Collections
+1. [Set directory and create bin folder](#set-directory-and-create-a-bin-in-desired-folder ) 
+2. [Setup of folders] ()
+3. [Install mongoDB for the folders]()
+4. [Access MongoDB environment]()
+5. [Databases and Collections]()
 
 
 ## Set directory and create a Bin in desired folder 
