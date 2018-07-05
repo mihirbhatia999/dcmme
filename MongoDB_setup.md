@@ -1,6 +1,9 @@
 # MongoDB Setup and Introduction 
+This is an instructional manual that helps you setup MongoDB using command line and then also works with a few basic commands to generate BSON files, display them and execute basic queries. This is not a complete guide, but it will help you get started. 
 
-## SET DIRECTORY IN WINDOWS and create a Bin in desired folder 
+I assume that you've downloaded MongoDB for your system and installed the appropriate version. Also make sure that during installation you go the "Custom" option and create a folder you want to work in. I created"Mongo_DCMME" folder for my project in the D-drive.
+
+## Set directory and create a Bin in desired folder 
 ```
 C:\>cd Windows
 ```
