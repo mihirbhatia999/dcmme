@@ -90,9 +90,12 @@ This command will show the list of databases that are present in the directory y
 ```
 
 ### Create a user for the Database 
-
+Setup a user with appropriate password. Set the roles of the user to the appropriate values. 
+readWrite: Allows gives permission to user to read and write from the database 
+dbAdmin: Sets this user as the database administrator
+```
 > db.createUser({user:"Mihir", pwd:"12345", roles:["readWrite","dbAdmin"]})
-Successfully added user: { "user" : "Mihir", "roles" : [ "readWrite", "dbAdmin" ] }
+```
 
 ### Create a collection 
 MongoDB stores documents in collections. Collections are analogous to tables in relational databases.
